@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Caja</title>
-    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="css/style.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
@@ -16,7 +16,7 @@
   <body>
     <div class="container">
       <button id="goToTopBtn" onclick="goBack()">
-        <a href="/index.html">Inicio</a>
+        <a href="https://dbrayang.github.io/Q-detalle/">Inicio</a>
       </button>
 
       <div class="title">Detalle</div>
@@ -74,7 +74,10 @@
           .forEach((product) => {
             if (thisProduct.name == product.name) {
               let newProduct = document.createElement("a");
-              newProduct.href = "/detail.html?id=" + product.id;
+              newProduct.href =
+                "https://dbrayang.github.io/Q-detalle" +
+                "/detail.html?id=" +
+                product.id;
               newProduct.classList.add("item");
               newProduct.innerHTML = `
           <img src="${product.image}">

@@ -70,7 +70,10 @@
               products.forEach((product) => {
                 if (option == product.name) {
                   let newProduct = document.createElement("a");
-                  newProduct.href = "/detail.html?id=" + product.id;
+                  newProduct.href =
+                    "https://dbrayang.github.io/Q-detalle" +
+                    "/detail.html?id=" +
+                    product.id;
                   newProduct.classList.add("item");
                   newProduct.innerHTML = `
                   <img src="${product.image}">
