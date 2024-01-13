@@ -1,0 +1,121 @@
+body{
+    margin: 0;
+    font-family: Poppins;
+    background-color: #fce3da;
+}
+a{
+    color: unset;
+    text-decoration: none;
+}
+.container{
+    width: 900px;
+    max-width: 90vw;
+    margin: auto;
+    padding-top: 10px;
+    text-align: center;
+}
+.title{
+    font-size: xx-large;
+    padding: 20px 0;
+}
+.listProduct .item img{
+    width: 90%;
+    filter: drop-shadow(0 50px 20px #0009);    
+}
+.listProduct{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+.listProduct .item{
+    background-color: #eeeee6;
+    padding: 20px;
+    border-radius: 20px;
+}
+.listProduct .item h2{
+    font-size: large;
+    font-weight: 500;
+}
+/* detail page*/
+.detail{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 50px;
+    text-align: left;
+}
+.detail .image img{
+    width: 100%;
+}
+.detail .image{
+    position: relative;
+}
+.detail .image::before{
+    position:absolute;
+    width: 300px;
+    height: 300px;
+    content:"";
+    background-color: #94817733;
+    z-index: -1;
+    border-radius: 190px 100px 170px 180px;
+    left: calc(50% - 150px);
+    top: 50px;
+}
+.detail .name{
+    font-size:  xxx-large;
+    padding: 40px 0 0 0;
+    margin: 0 0 10px 0;
+}
+.detail .description{
+    font-weight: 300;
+}
+button {
+    position: absolute;
+    top: 10px;
+    right: 100px;
+  }
+  .logo {
+    max-width: 50%;
+    height: auto;
+    margin-top: -100px;
+    margin-bottom: -100px;
+  }
+
+/*ipad*/
+@media screen and (max-width: 992px){
+    .listProduct{
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .detail{
+        grid-template-columns: 40% 1fr;
+    }
+    button{
+        right: 14px;
+    }
+    .logo{
+        max-width: 100%; 
+    }
+}
+/*mobile*/
+@media screen and (max-width: 768px) {
+    .listProduct{
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .detail{
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    .detail .img img{
+        width: unset;
+        height: 40vh;
+    }
+    .detail .name{
+        font-size: x-large;
+        margin: 0;
+    }
+    button{
+        right: 10px;
+    }
+    .logo{
+        max-width: 100%; 
+    }
+}
