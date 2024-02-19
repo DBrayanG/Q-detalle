@@ -15,80 +15,94 @@
   </head>
   <body>
     <div class="container">
-      <button id="goToTopBtn" onclick="goBack()">
-        <a href="https://dbrayang.github.io/Q-detalle/">Inicio</a>
-      </button>
+      <button id="goToTopBtn">Inicio</button>
 
       <div class="title">Detalle</div>
       <div class="detail">
         <div class="image">
-          <img src="" alt="" />
+          <img id="detailImage" src="" alt="" />
         </div>
         <div class="content">
-          <h1 class="name"></h1>
-          <!-- <div class="description"></div> -->
-          <div class="modelo"></div>
-          <div class="cierre"></div>
-          <div class="forro"></div>
-          <div class="material"></div>
-          <div class="color"></div>
-          <div class="dimensiones"></div>
-          <div class="nota"></div>
+          <h1 id="detailName" class="name"></h1>
+          <div class="detail-info"></div>
         </div>
       </div>
       <div class="title">Similares</div>
       <div class="listProduct"></div>
     </div>
     <script>
-      let products = null;
+      document
+        .getElementById("goToTopBtn")
+        .addEventListener("click", function () {
+          window.location.href = "https://dbrayang.github.io/Q-detalle/";
+        });
+
       fetch("product.json")
         .then((response) => response.json())
-        .then((data) => {
-          products = data;
-          showDetail();
+        .then((products) => {
+          const productId = new URLSearchParams(window.location.search).get(
+            "id"
+          );
+          const thisProduct = products.find(
+            (product) => product.id == productId
+          );
+
+          if (!thisProduct) {
+            window.location.href = "/";
+            return;
+          }
+
+          displayDetail(thisProduct);
+          displaySimilarProducts(products, thisProduct);
         });
-      function showDetail() {
-        let detail = document.querySelector(".detail");
-        let productId = new URLSearchParams(window.location.search).get("id");
 
-        let thisProduct = products.filter((value) => {
-          return value.id == productId;
-        })[0];
-        if (!thisProduct) {
-          window.location.href = "/";
-        }
-        detail.querySelector(".image img").src = thisProduct.image;
-        detail.querySelector(".name").innerText = thisProduct.name;
-        detail.querySelector(".modelo").innerHTML = thisProduct.modelo;
-        detail.querySelector(".cierre").innerText = thisProduct.cierre;
-        detail.querySelector(".dimensiones").innerText =
-          thisProduct.dimensiones;
-        detail.querySelector(".forro").innerText = thisProduct.forro;
-        detail.querySelector(".material").innerText = thisProduct.material;
-        detail.querySelector(".color").innerText = thisProduct.color;
-        detail.querySelector(".nota").innerHTML = thisProduct.nota;
+      function displayDetail(product) {
+        const detailImage = document.getElementById("detailImage");
+        const detailName = document.getElementById("detailName");
+        const detailInfo = document.querySelector(".detail-info");
 
-        let listProducts = document.querySelector(".listProduct");
-        products
-          .filter((value) => value.id != productId)
-          .forEach((product) => {
-            if (thisProduct.name == product.name) {
-              let newProduct = document.createElement("a");
-              newProduct.href =
-                "https://dbrayang.github.io/Q-detalle" +
-                "/detail.html?id=" +
-                product.id;
-              newProduct.classList.add("item");
-              newProduct.innerHTML = `
-          <img src="${product.image}">
-          <h2>${product.name}</h2>
-          `;
-              listProducts.appendChild(newProduct);
-            }
-          });
+        detailImage.src = product.image;
+        detailName.innerText = product.name;
+
+        const infoFields = [
+          "modelo",
+          "cierre",
+          "dimensiones",
+          "forro",
+          "material",
+          "color",
+          "nota",
+        ];
+
+        infoFields.forEach((field) => {
+          const fieldValue = product[field];
+          if (fieldValue) {
+            const fieldElement = document.createElement("div");
+            fieldElement.classList.add(field);
+            fieldElement.innerText = fieldValue;
+            detailInfo.appendChild(fieldElement);
+          }
+        });
       }
-      function goBack() {
-        window.history.back();
+
+      function displaySimilarProducts(products, currentProduct) {
+        const listProducts = document.querySelector(".listProduct");
+
+        products.forEach((product) => {
+          if (
+            product.id !== currentProduct.id &&
+            product.name === currentProduct.name
+          ) {
+            const newProduct = document.createElement("a");
+            newProduct.href = `https://dbrayang.github.io/Q-detalle/detail.html?id=${product.id}`;
+            newProduct.classList.add("item");
+            newProduct.innerHTML = `
+              <img src="${product.image}">
+              <h2>${product.name}</h2>
+            `;
+            listProducts.appendChild(newProduct);
+          }
+        });
       }
     </script>
   </body>

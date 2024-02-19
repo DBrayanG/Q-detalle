@@ -32,78 +32,53 @@
     </div>
 
     <script>
-      let products = null;
-      let lista = document.getElementById("list");
-      let checkboxes = document.querySelectorAll("input[type=checkbox]");
+      document.addEventListener("DOMContentLoaded", function () {
+        const lista = document.getElementById("list");
+        const checkboxes = document.querySelectorAll("input[type=checkbox]");
 
-      fetch("product.json")
-        .then((response) => response.json())
-        .then((data) => {
-          products = data;
-          console.log(products);
+        let products = null;
 
-          // Llama a la función después de cargar los datos
-          actualizarResultados();
+        fetch("product.json")
+          .then((response) => response.json())
+          .then((data) => {
+            products = data;
+            console.log(products);
+            actualizarResultados();
 
-          checkboxes.forEach(function (checkbox) {
-            checkbox.addEventListener("change", function () {
-              actualizarResultados();
+            checkboxes.forEach(function (checkbox) {
+              checkbox.addEventListener("change", actualizarResultados);
             });
           });
 
-          function actualizarResultados() {
-            lista.innerHTML = "";
-            checkboxes.forEach(function (checkbox) {
-              if (checkbox.checked) {
-                addDataToHTML(checkbox.id);
+        function actualizarResultados() {
+          lista.innerHTML = "";
+          const checkedItems = Array.from(checkboxes)
+            .filter((checkbox) => checkbox.checked)
+            .map((checkbox) => checkbox.id);
+
+          if (products) {
+            products.forEach((product) => {
+              if (
+                checkedItems.includes(product.name) ||
+                checkedItems.length === 0
+              ) {
+                lista.appendChild(createProductElement(product));
               }
             });
-
-            // Si ningún checkbox está seleccionado, muestra todos los productos
-            if (!Array.from(checkboxes).some((checkbox) => checkbox.checked)) {
-              addAllDataToHTML();
-            }
           }
+        }
 
-          function addDataToHTML(option) {
-            if (products != null) {
-              products.forEach((product) => {
-                if (option == product.name) {
-                  console.log(product.name);
-                  let newProduct = document.createElement("a");
-                  newProduct.href =
-                    "https://dbrayang.github.io/Q-detalle" +
-                    "/detail.html?id=" +
-                    product.id;
-                  newProduct.classList.add("item");
-                  newProduct.innerHTML = `
-                  <img src="${product.image}">
-                  <h2>${product.name}</h2>
-                `;
-                  lista.appendChild(newProduct);
-                }
-              });
-            }
-          }
-
-          function addAllDataToHTML() {
-            if (products != null) {
-              products.forEach((product) => {
-                let newProduct = document.createElement("a");
-                newProduct.href =
-                  "https://dbrayang.github.io/Q-detalle" +
-                  "/detail.html?id=" +
-                  product.id;
-                newProduct.classList.add("item");
-                newProduct.innerHTML = `
-                  <img src="${product.image}">
-                  <h2>${product.name}</h2>
-                `;
-                lista.appendChild(newProduct);
-              });
-            }
-          }
-        });
+        function createProductElement(product) {
+          const newProduct = document.createElement("a");
+          newProduct.href = `https://dbrayang.github.io/Q-detalle/detail.html?id=${product.id}`;
+          newProduct.classList.add("item");
+          newProduct.innerHTML = `
+            <img src="${product.image}">
+            <h2>${product.name}</h2>
+          `;
+          return newProduct;
+        }
+      });
     </script>
   </body>
 </html>
